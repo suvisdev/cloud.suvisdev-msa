@@ -6,4 +6,4 @@
 	url = https://github.com/suvisdev/com.ragwatson.docs.git
 [submodule "frontend"]
 	path = frontend
-	url = https://github.com/suvisdev/cloud.suvisdev.www.git
+	url = https://github.com/suvisdev/cloud.suvisdev.www
