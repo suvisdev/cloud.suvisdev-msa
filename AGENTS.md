@@ -36,7 +36,7 @@
 | `passenger_isidor_couple_schema` | `passenger_isidor_couple_router` | … | … | … | … | `passenger_isidor_couple.py` |
 | `passenger_jack_trainer_schema` | `passenger_jack_trainer_router` | … | … | … | … | `passenger_jack_trainer.py` |
 | `passenger_rose_model_schema` | `passenger_rose_model_router` | … | ORM: `passenger_rose_model_orm` | … | … | `passenger_rose_model.py` |
-| `passenger_ruth_survivor_schema` | `passenger_ruth_survivor_router` | … | … | … | … | `passenger_ruth_survivor.py` |
+| `passenger_ruth_validation_schema` | `passenger_ruth_validation_router` | … | … | … | … | `passenger_ruth_validation.py` |
 | `passenger_molly_scaler_schema` | `passenger_molly_scaler_router` | … | … | … | … | `passenger_molly_scaler.py` |
 
 ORM(James 업로드): `passenger_rose_model_orm`(Person), `passenger_jack_trainer_orm`(Booking)
