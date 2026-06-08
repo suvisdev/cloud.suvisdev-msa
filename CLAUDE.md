@@ -1,6 +1,6 @@
 # LLM 코딩 행동 지침 (Karpathy 원칙)
 
-LLM의 일반적인 코딩 실수를 줄이기 위한 행동 지침이다. [Andrej Karpathy의 관찰](https://x.com/karpathy/status/2015883857489522876)에서 출발한 네 가지 원칙을 한국어로 정리한 것이다. 프로젝트별 지침이 있으면 본 문서와 **병합**하여 사용한다.
+LLM의 일반적인 코딩 실수를 줄이기 위한 행동 지침이다. [Andrej Karpathy의 관찰](https://x.com/karpathy/status/2015883857489522876)에서 출발한 네 가지 원칙을 한국어로 정리한 것이다. **본 저장소 백엔드 작업 시에는 아래 「백엔드 인수인계」 섹션과 병합**하여 사용한다.
 
 ## 배경: 무엇을 고치려는가
 
@@ -12,8 +12,6 @@ Karpathy가 지적한 전형적인 문제는 다음과 같다.
 >
 > 때로는 과제와 직교인 코드·주석까지 이해 없이 바꾸거나 없앤다.
 
-이 문서의 네 원칙은 위 문제에 **직접 대응**하도록 설계되었다.
-
 | 원칙 | 겨냥하는 문제 |
 |------|----------------|
 | 구현 전 사고 | 잘못된 가정, 숨겨진 혼란, 트레이드오프 부재 |
@@ -23,108 +21,387 @@ Karpathy가 지적한 전형적인 문제는 다음과 같다.
 
 ## 트레이드오프
 
-본 지침은 **속도보다 신중함**에 우선순위를 둔다. 사소한 작업(명백한 오타 수정, 한 줄 수정 등)은 상황에 맞게 판단한다. 비용이 큰 실수를 줄이는 것이 목적이지, 단순 작업까지 같은 절차를 강요하는 것은 아니다.
+본 지침은 **속도보다 신중함**에 우선순위를 둔다. 사소한 작업(명백한 오타 수정, 한 줄 수정 등)은 상황에 맞게 판단한다.
 
 ---
 
 ## 1. 구현 전 사고 (Think Before Coding)
 
-**가정하지 않는다. 모호함을 숨기지 않는다. 트레이드오프를 드러낸다.**
-
-구현을 시작하기 전 다음을 준수한다.
-
 - 자신의 가정을 **명시**한다. 불확실하면 **질문**한다.
 - 해석의 여지가 여러 가지면 임의로 고르지 말고 **대안을 제시**한다.
-- 더 단순한 접근이 있으면 **제안**한다. 정당한 이유가 있으면 사용자 요청에 **반대 의견**을 제시한다.
-- 불분명하면 **멈춘다**. 무엇이 혼란스러운지 구체적으로 짚고 질문한다.
-
----
+- 더 단순한 접근이 있으면 **제안**한다.
+- 불분명하면 **멈춘다**.
 
 ## 2. 단순성 우선 (Simplicity First)
 
-**문제를 푸는 데 필요한 최소한의 코드만. 추측성 작업은 하지 않는다.**
-
-- 요청되지 않은 기능은 추가하지 않는다.
-- 일회성 코드를 위해 추상화 계층을 만들지 않는다.
-- 요청되지 않은 유연성·설정 가능성은 넣지 않는다.
+- 요청되지 않은 기능·추상·설정은 넣지 않는다.
 - **발생 불가능한** 시나리오를 위한 예외 처리는 하지 않는다.
-- 200줄을 50줄로 줄일 수 있으면 **다시 쓴다**.
-
-**검문:** 시니어 엔지니어가 보기에 이 코드가 지나치게 복잡한가? 그렇다면 단순화한다.
-
----
 
 ## 3. 정밀한 수정 (Surgical Changes)
 
-**꼭 필요한 곳만 건드린다. 정리는 자신이 만든 잔여물만 한다.**
-
-기존 코드를 편집할 때:
-
-- 인접한 코드·주석·포맷을 임의로 “개선”하지 않는다.
-- 망가지지 않은 부분은 리팩터링하지 않는다.
-- 본인 스타일과 달라도 **기존 스타일**을 따른다.
-- 작업과 무관한 데드 코드를 발견하면 **보고만** 하고, 임의로 삭제하지 않는다.
-
-수정으로 인해 **내 변경** 때문에만 쓰이지 않게 된 요소가 있으면:
-
-- 그로 인해 불필요해진 import·변수·함수는 **제거**한다.
-- 원래부터 있던 데드 코드는 요청이 없는 한 **그대로** 둔다.
-
-**검문:** 변경된 모든 줄이 사용자 요청과 **직접** 연결되는가?
-
----
+- 인접 코드를 임의로 “개선”하지 않는다.
+- **기존 스타일**을 따른다.
+- 변경으로 불필요해진 import·변수만 제거한다.
 
 ## 4. 목표 중심 실행 (Goal-Driven Execution)
 
-**성공 기준을 정의한다. 검증될 때까지 반복한다.**
-
 모호한 지시를 검증 가능한 목표로 바꾼다.
-
-| 대신 이렇게 말하기 | 이렇게 바꾸기 |
-|--------------------|----------------|
-| 유효성 검사 추가 | 잘못된 입력에 대한 테스트를 쓰고, 통과시키기 |
-| 버그 수정 | 버그를 재현하는 테스트를 쓰고, 통과시키기 |
-| X 리팩터링 | 리팩터링 전후로 테스트 통과 유지·확인 |
-
-다단계 작업이면 짧은 계획을 쓴다.
 
 ```text
 1. [단계] → 검증: [확인 사항]
 2. [단계] → 검증: [확인 사항]
-3. [단계] → 검증: [확인 사항]
 ```
-
-성공 기준이 명확해야 에이전트가 **독립적으로 루프**하기 쉽다. “작동하게 만들기”처럼 모호한 기준은 불필요한 재질의를 부른다.
-
-### 핵심 통찰
-
-> LLM은 **구체적인 목표**를 만족할 때까지 루프하는 데 매우 강하다. 무엇을 하라고만 나열하기보다 **성공 기준**을 주면 그에 맞춰 돈다.
-
-즉, 명령 나열이 아니라 **선언적 목표 + 검증 루프**로 바꾸는 것이 이 원칙의 요지다.
 
 ---
 
-## 지침이 먹히고 있는지 확인
+# cloud.suvisdev 백엔드 인수인계
 
-다음이 보이면 잘 적용되고 있는 것이다.
-
-- diff에 **불필요한 변경이 줄었다** — 요청한 것만 바뀐다.
-- 과한 복잡도로 **다시 짜는 일이 줄었다** — 처음부터 단순하다.
-- 실수 **이후**가 아니라 구현 **전에** 명확히 하는 질문이 나온다.
-- PR이 **깔끔하고 최소한**이다 — 지나가며 리팩터링·“개선”이 섞이지 않는다.
+> **대상:** Claude Code·Cursor 등 코딩 에이전트.  
+> **목적:** Clean Architecture + Hexagonal + FastAPI + SOLID(SRP·ISP·DIP) 규칙을 **한 문서**에서 인수인계한다.  
+> **기준 구현:** `suvisdev/apps/titanic/` (James/Walter) — Mova·Viewer는 **동일 레이어 규칙**으로 맞춘 상태.
 
 ---
 
-## 프로젝트별 지침과 병합
+## A. 에이전트가 코드를 쓰기 전에 읽을 것
 
-예시:
+| 순서 | 문서 | 용도 |
+|------|------|------|
+| 1 | **본 파일** (`CLAUDE.md`) — 이 섹션 | 아키텍처·레이어·SOLID·패턴 |
+| 2 | `.cursorrules` | Cursor 하네스 요약 |
+| 3 | `docs/DevOps/Backend/ENTITY_RULE.md` | PK `id` int 자동증감 |
+| 4 | `docs/DevOps/Backend/MOVA_ERD.md` | Mova 테이블 관계 (해당 시) |
+| 5 | `AGENTS.md` | 앱별 경로·삭제된 옛 경로 금지 목록 |
 
-```markdown
-## 프로젝트별 지침
+**규칙 문서를 읽지 않고 관례를 추측하여 구현하지 않는다.**
 
-- TypeScript strict 모드 사용
-- API 엔드포인트는 테스트 필수
-- 에러 처리는 `src/utils/errors.ts` 패턴 따르기
+### 충돌 시 우선순위
+
+1. 사용자의 **더 구체적·최근** 지시  
+2. **`docs/`** 내 해당 영역 규칙 MD  
+3. 본 `CLAUDE.md` 백엔드 인수인계  
+4. `.cursorrules` 요약  
+
+Karpathy 네 원칙(묵시적 가정 금지·최소 diff)은 **항상** 유지한다.
+
+---
+
+## B. 저장소 앱 구조 (`suvisdev/apps/`)
+
+| 앱 | 역할 | 표준 참조 |
+|----|------|-----------|
+| `titanic/` | CSV 업로드(James)·조회(Walter) — **헥사고날 기준선** | `james_interactor.py`, `dependencies/james.py` |
+| `mova/` | 영화·채팅·랭킹·리뷰 등 도메인 API | James와 **동일 레이어** |
+| `viewer/` | 인증(`groups`, `admins`, `users`) — login/signup | James와 **동일 레이어** |
+
+- **인증은 `viewer/`** — `friday13th`는 수업용, 프로덕션 login/signup은 viewer만 사용.
+- **DB:** Neon PostgreSQL. Mova·Viewer(Secom)는 동일 DB URL을 공유하는 경우가 많음 (`DATABASE_URL` / `MOVA_DATABASE_URL` / `SECOM_DATABASE_URL`).
+- **진입점:** `suvisdev/main.py` — lifespan에서 `verify_connection()` → `create_tables()` → `seed_secom_if_empty()`.
+
+---
+
+## C. 아키텍처: Clean Architecture + Hexagonal (Ports & Adapters)
+
+### C.1 개념
+
+- **Clean Architecture:** 의존 방향은 **바깥 → 안쪽**. 도메인(앱 코어)은 FastAPI·SQLAlchemy·HTTP에 의존하지 않는다.
+- **Hexagonal:** **입력 포트**(Use Case ABC)와 **출력 포트**(Repository ABC)로 외부와 연결. 구현체(Adapter)는 `adapter/`에 둔다.
+
+### C.2 표준 요청 흐름 (James = Mova = Viewer)
+
+```text
+[Inbound Adapter]  Router (FastAPI)
+       │  Schema in
+       ▼
+[Input Port]         XxxUseCase (ABC)     ← Schema in, Dto out
+       │
+       ▼
+[Application]      XxxInteractor        ← Schema → Command → Repository
+       │
+       ▼
+[Output Port]      XxxRepository (ABC)  ← Command in
+       │
+       ▼
+[Outbound Adapter] XxxPgRepository      ← ORM read/write
+       │
+       ▼
+[DB]               PostgreSQL (Neon)
 ```
 
-기존 `CLAUDE.md`가 있으면 위 네 원칙을 붙이거나, 프로젝트 규칙 뒤에 이 섹션들을 이어 붙이면 된다.
+**응답 경로 (Mova·Viewer):**
+
+```text
+ORM row → Dto.from_orm() → Interactor 반환
+       → Router에서 Dto.to_schema() → HTTP JSON (OpenAPI response_model)
+```
+
+**James/Walter 예외:** 응답 DTO(`JamesResponse`, `WalterResponse`)가 곧 HTTP 계약이면 router에서 **변환 없이** 반환해도 된다.
+
+### C.3 레이어별 책임 (반드시 지킬 것)
+
+| 레이어 | 위치 | 할 수 있는 것 | 하면 안 되는 것 |
+|--------|------|---------------|-----------------|
+| **Router** | `adapter/inbound/api/v1/*_router.py` | Schema 수신, `Depends`, `invoke()`, Dto→Schema | 비즈니스 로직, DB 직접 접근, Repository 직접 생성 |
+| **Input Port** | `app/ports/input/*_use_case.py` | ABC, Schema in / Dto out 시그니처 | 구현 코드, DB |
+| **Interactor** | `app/use_cases/*_interactor.py` | Schema→Command, port 호출, Dto 반환 | `to_schema()`, `HTTPException`, ORM import |
+| **Output Port** | `app/ports/output/*_repository.py` | ABC, Command in | 구현 코드 |
+| **PgRepository** | `adapter/outbound/pg/*_pg_repository.py` | Command 처리, ORM, `RepositoryError` | `HTTPException`, Use Case import |
+| **ORM** | `adapter/outbound/orm/` 또는 `app/dtos/*_model.py` | 테이블 매핑 | Router·Interactor에서 직접 쓰지 않음(Repository 경유) |
+| **Dto / Command** | `app/dtos/` | `from_schema`, `from_orm`, `to_schema`(Dto만) | HTTP·DB 세션 |
+| **DI** | `dependencies/*.py` | `get_*_use_case`, 구체 Repository→Interactor 조립 | 비즈니스 로직 |
+| **Schema** | `adapter/inbound/api/schemas/` | Pydantic, OpenAPI | Repository·ORM |
+
+### C.4 디렉터리 템플릿 (앱 하나 기준)
+
+```text
+suvisdev/apps/{app}/
+├── adapter/
+│   ├── inbound/api/
+│   │   ├── http_errors.py      # invoke() — HTTP 예외 변환
+│   │   ├── schemas/            # Pydantic Request/Response
+│   │   └── v1/*_router.py      # FastAPI Router
+│   └── outbound/
+│       ├── pg/*_pg_repository.py
+│       └── orm/                # (mova) SQLAlchemy ORM
+├── app/
+│   ├── dtos/                   # Command + Dto dataclass
+│   ├── ports/
+│   │   ├── input/*_use_case.py
+│   │   └── output/*_repository.py
+│   └── use_cases/*_interactor.py
+└── dependencies/*.py           # FastAPI Depends DI
+```
+
+---
+
+## D. 데이터 객체 규칙
+
+### D.1 종류와 역할
+
+| 타입 | 예시 | 생성 | 사용처 |
+|------|------|------|--------|
+| **Schema** | `MovieCreateSchema`, `LoginSchema` | Pydantic | Router in, Input Port in, OpenAPI |
+| **Command** | `MovieUpsertCommand`, `LoginUserCommand` | `from_schema()` | Interactor → Output Port → PgRepository |
+| **Dto** | `MovieDto`, `LoginResponseDto` | `from_orm()` 또는 interactor 조립 | Input Port out, Interactor return |
+| **ORM** | `MovaMovie`, `User` | SQLAlchemy | PgRepository 내부만 |
+
+### D.2 변환 규칙
+
+```python
+# Interactor (표준)
+command = MovieUpsertCommand.from_schema(payload)
+row = await self._repository.upsert(command)
+return MovieDto.from_orm(row)
+
+# Router (Mova·Viewer — HTTP 계약이 Schema일 때)
+return (await invoke(movies.save_movie(req), domain_errors=_REPO_ERRORS)).to_schema()
+
+# Router (James — DTO = HTTP 계약)
+return await james.receive_uploaded_records(schemas)  # JamesResponse
+```
+
+- **`model_dump()` → dict → Command** 패턴은 **금지**. 반드시 `Command.from_schema(schema)`.
+- Interactor·Use Case 레이어에서 **`to_schema()` 호출 금지** — inbound adapter(Router) 책임.
+- Command에 **`to_dict()` / `to_payload()`** 넣지 않음 — Repository는 Command 객체를 직접 받는다.
+- Dto의 `to_schema()`는 **lazy import**로 Schema를 가져와 순환 import를 피한다 (`TYPE_CHECKING` + 메서드 내부 import).
+
+### D.3 엔티티 PK (`ENTITY_RULE` 요약)
+
+- 모든 테이블 PK: **`id`**, 타입 **`int`**, **자동 증가**.
+- 비즈니스 키(`slug`, `username`)는 **UNIQUE 별도 컬럼**.
+- FK: `{entity}_id` → `{table}.id`
+
+---
+
+## E. FastAPI 규칙
+
+### E.1 Router
+
+```python
+@movies_router.post("/movies", response_model=MovieSchema, status_code=201)
+async def save_movie(
+    req: MovieCreateSchema,
+    movies: MoviesUseCase = Depends(get_movies_use_case),
+) -> MovieSchema:
+    return (await invoke(movies.save_movie(req), domain_errors=_REPO_ERRORS)).to_schema()
+```
+
+- Router는 **얇게(thin)** — 파라미터·DI·`invoke`·Dto→Schema만.
+- Use Case는 **전역 변수 주입 금지** — `Depends(get_*_use_case)`만 사용.
+- `adapter/inbound/api/__init__.py`에서 `xxx_use_case = ...` 로 묶지 **않는다** (viewer 구식 패턴 제거됨).
+
+### E.2 DI (`dependencies/*.py`)
+
+```python
+def get_james_use_case(db: AsyncSession = Depends(get_db)) -> JamesUseCase:
+    repository: JamesRepository = JamesPgRepository(session=db)
+    return JamesInteractor(repository=repository)
+```
+
+- Interactor는 **Output Port(ABC)만** 생성자로 받는다 — 구체 PgRepository를 interactor 내부에서 `new` 하지 않는다.
+- Mova: `get_db()` → `get_mova_db()`
+- Viewer: `get_secom_db()`
+- Interactor가 다른 Use Case가 필요하면 **Input Port**를 DI로 주입 (`MoviesInteractor` ← `CharactersUseCase`, `ReviewsUseCase`).
+
+### E.3 예외 처리 (`http_errors.invoke`)
+
+- PgRepository: 도메인/영속 오류 → **`XxxRepositoryError(message, status_code=...)`** — `HTTPException` 사용 금지.
+- Router: `await invoke(coro, domain_errors=(XxxRepositoryError,))` — 503(RuntimeError) 등 공통 변환.
+- Chat 등 외부 LLM: `invoke(..., chat=True)` — 502 fallback.
+
+### E.4 async
+
+- Repository·Use Case·Router handler: **`async def`**
+- DB: SQLAlchemy 2.0 **async** (`AsyncSession`, `postgresql+psycopg://`)
+
+---
+
+## F. SOLID — 적용 현황
+
+| 원칙 | 상태 | 본 프로젝트에서의 의미 |
+|------|------|------------------------|
+| **SRP** | ✅ 적용 | Router=HTTP, Interactor=유스케이스, Repository=persistence 각각 한 책임 |
+| **ISP** | ✅ 적용 | 도메인별 `MoviesUseCase`, `LoginUseCase` 등 **작은 입력 포트** 분리 |
+| **DIP** | ✅ 적용 | Interactor → Port ABC; `dependencies/`에서 구현체 주입 |
+| **OCP** | 🔄 학습 중 | 새 import 소스·집계를 plugin으로 확장하는 구조는 **아직 의도적으로 미적용** |
+| **LSP** | 🔄 학습 중 | Port 구현체 교체·계약 검증은 **아직 엄격히 강제하지 않음** |
+
+**에이전트 지침:** OCP/LSP를 이유로 **과한 추상·팩토리·전략 패턴 남발 금지**. 요청 범위 안에서 SRP·ISP·DIP만 지키면 된다.
+
+---
+
+## G. 사용 중인 디자인 패턴
+
+| 패턴 | 위치 | 설명 |
+|------|------|------|
+| **Ports & Adapters (Hexagonal)** | `app/ports/`, `adapter/` | Use Case·Repository ABC + inbound/outbound adapter |
+| **Use Case / Interactor** | `*_use_case.py`, `*_interactor.py` | 애플리케이션 서비스; port 구현 |
+| **Repository** | `*_repository.py`, `*_pg_repository.py` | 영속성 추상화 |
+| **DTO** | `app/dtos/` | 계층 간 전달 객체 (Command / Response Dto) |
+| **Command Object** | `*Command`, `*UpsertCommand` | 쓰기 요청을 Repository로 전달 |
+| **Dependency Injection** | `dependencies/*.py`, FastAPI `Depends` | 구성(composition root) |
+| **Adapter** | Router, PgRepository, LLM adapter | 외부 기술을 port에 맞게 변환 |
+| **Factory (제한적)** | `get_*_session_factory()`, `from_schema` | 세션·객체 생성만; 범용 Abstract Factory 지양 |
+
+---
+
+## H. DB·스키마 관리
+
+### H.1 `create_tables()` 순서 (`core/matrix/oracle_database.py`)
+
+1. **Titanic** (`TitanicBase`)
+2. **Viewer/Secom** (`SecomBase`) — `groups`, `admins`, `users` **먼저**
+3. **Mova** (`MovaBase`) — `chat`/`picks`/`reviews`가 `users.id` FK 참조
+
+### H.2 Cross-metadata FK
+
+Mova ORM과 Viewer ORM은 **서로 다른 `DeclarativeBase`** 이다. 문자열 `"users.id"` FK 대신:
+
+```python
+ForeignKey(User.__table__.c.id)
+```
+
+### H.3 검증 스크립트
+
+```powershell
+cd suvisdev
+python scripts/verify_db_tables.py
+```
+
+성공 시: `전체 PASS` — 연결, 14 public 테이블, cross-FK, secom seed 확인.
+
+### H.4 Viewer 시드
+
+- `seed_secom_if_empty()` — `groups`(2), `admins`(1) 등 기본 데이터.
+
+---
+
+## I. 앱별 참조 파일 (복사할 때 여기부터)
+
+### Titanic (기준선)
+
+| 역할 | 파일 |
+|------|------|
+| Router | `titanic/adapter/inbound/api/v1/james_router.py` |
+| Input Port | `titanic/app/ports/input/james_use_case.py` |
+| Interactor | `titanic/app/use_cases/james_interactor.py` |
+| Output Port | `titanic/app/ports/output/james_repository.py` |
+| PgRepository | `titanic/adapter/outbound/pg/james_pg_repository.py` |
+| DI | `titanic/dependencies/james.py` |
+| DTO | `titanic/app/dtos/james_dto.py` (`PersonCommand`, `JamesResponse`) |
+
+### Mova (Dto + Schema 변환)
+
+| 역할 | 파일 |
+|------|------|
+| Router + invoke | `mova/adapter/inbound/api/v1/movies_router.py` |
+| Input Port | `mova/app/ports/input/movies_use_case.py` |
+| Interactor | `mova/app/use_cases/movies_interactor.py` |
+| Dto | `mova/app/dtos/movies_dto.py`, `actors_dto.py` |
+| DI | `mova/dependencies/movies.py` |
+| http_errors | `mova/adapter/inbound/api/http_errors.py` |
+
+### Viewer (인증)
+
+| API | 경로 |
+|-----|------|
+| Login | `POST /viewer/login/login` |
+| Signup | `POST /viewer/signup/signup` |
+
+| 역할 | 파일 |
+|------|------|
+| Router | `viewer/adapter/inbound/api/v1/login_router.py` |
+| DI | `viewer/dependencies/login.py` (`get_secom_db`) |
+| Dto | `viewer/app/dtos/auth_command_dto.py` |
+| ORM | `viewer/app/dtos/user_model.py`, `admin_model.py`, `group_model.py` |
+
+---
+
+## J. 금지·안티패턴
+
+| ❌ 금지 | ✅ 대신 |
+|--------|--------|
+| Router에서 Repository 직접 호출 | Use Case port 경유 |
+| Interactor에서 `HTTPException` | `RepositoryError` → router `invoke` |
+| Interactor에서 `to_schema()` | Router에서 `Dto.to_schema()` |
+| `model_dump()` dict로 Command 생성 | `Command.from_schema(schema)` |
+| `adapter/__init__.py` 전역 use case 주입 | `dependencies/*.py` + `Depends` |
+| Interactor 내부 `XxxPgRepository()` | 생성자 주입 (DIP) |
+| Repository에서 FastAPI import | 순수 예외 클래스 |
+| 요청 없는 OCP용 인터페이스 남발 | YAGNI — Karpathy 단순성 우선 |
+| PK를 slug/username만으로 | `id` PK + UNIQUE 보조키 |
+| 삭제된 경로 참조 (`friday13th/jason`, `james_command.py` 등) | `AGENTS.md` 확인 |
+
+---
+
+## K. 새 API 추가 체크리스트
+
+1. [ ] `schemas/*_schema.py` — Request/Response Pydantic  
+2. [ ] `app/dtos/` — `*Command.from_schema`, `*Dto.from_orm`, `to_schema`  
+3. [ ] `app/ports/input/*_use_case.py` — ABC (Schema in, Dto out)  
+4. [ ] `app/ports/output/*_repository.py` — ABC (Command in)  
+5. [ ] `app/use_cases/*_interactor.py` — Schema→Command→Repo→Dto  
+6. [ ] `adapter/outbound/pg/*_pg_repository.py` — Command 처리, `RepositoryError`  
+7. [ ] `dependencies/*.py` — `get_*_use_case`  
+8. [ ] `adapter/inbound/api/v1/*_router.py` — `Depends`, `invoke`, `to_schema`  
+9. [ ] `main.py` 또는 상위 router에 include  
+10. [ ] `python -c "import main"` 및 필요 시 `verify_db_tables.py`  
+
+---
+
+## L. 관련 문서·파일
+
+| 문서 | 경로 |
+|------|------|
+| 에이전트 경로 안내 | `AGENTS.md` |
+| Cursor 하네스 | `.cursorrules` (자동 로드), `.cursorignore` (인덱스 제외) |
+| 코딩 규칙 인덱스 | `vault/README.md` (또는 `docs/` 동기본) |
+| 엔티티 PK | `docs/DevOps/Backend/ENTITY_RULE.md` |
+| Mova ERD | `docs/DevOps/Backend/MOVA_ERD.md` |
+| Titanic ERD | `vault/DevOps/Backend/TITANIC_ERD.md` |
+
+---
+
+## M. 한 줄 요약 (에이전트용)
+
+> **Router(Schema) → Input Port(Schema→Dto) → Interactor(Schema→Command→Port) → PgRepository(Command→ORM) → Dto → Router(`to_schema`)**  
+> **SRP·ISP·DIP 지킨다. OCP·LSP는 아직 확장하지 않는다. James 패턴과 레이어를 완전히 동일하게 맞춘다.**

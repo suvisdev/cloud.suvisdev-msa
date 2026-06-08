@@ -1,39 +1,102 @@
+# Top-Level Harness — Wiki + LLM PKS (English)
+
+> **PKS** = Prompt (`.cursorrules`, user task) + Knowledge (`docs/`, `CLAUDE.md`, `AGENTS.md`) + System (architecture-compliant code).
+
+## Mandatory workflow (before any `suvisdev/` change)
+
+1. Read **Knowledge**: `.cursorrules` → `CLAUDE.md` → relevant `docs/` wiki pages → `AGENTS.md` when touching app paths.
+2. Do **not** guess conventions; Wiki overrides model priors.
+3. Apply **Karpathy harness**: state assumptions, minimal diff, verifiable success criteria.
+4. **PKS loop**: Prompt → Knowledge → System implementation.
+
+## Architecture (non-negotiable)
+
+All backend domain code **MUST** follow:
+
+| Principle | Requirement |
+|-----------|-------------|
+| **SOLID** | SRP, OCP, LSP, ISP, DIP — no layer-skipping, no god classes |
+| **Hexagonal** | Inbound adapters, input ports, interactors, output ports, outbound adapters |
+| **Clean Architecture** | Dependencies point **inward**; domain/application must not import FastAPI, ORM, or HTTP |
+| **DDD** | Entities, value objects, aggregates where applicable; ubiquitous language from wiki/domain docs |
+
+Standard request flow:
+
+```text
+Router (Schema) → Input Port (Schema in, Dto out) → Interactor (Schema→Command)
+  → Output Port → PgRepository → Dto → Router (to_schema)
+```
+
+## Module path notation (suvisdev)
+
+Use this **canonical agent notation** in rules, docs, and examples (filesystem may differ):
+
+| Layer | Convention | Example |
+|-------|------------|---------|
+| App modules | `suvisdev.<app>.<layer>...` — **omit `apps`** | `suvisdev.mova.app.use_cases.movies_interactor` |
+| Core / infra | `suvisdev.core.<module>...` | `suvisdev.core.matrix.oracle_database` |
+
+Rules:
+
+- Never write `suvisdev.apps.<app>` — the `apps` segment is implicit and omitted.
+- All `core/` modules are prefixed `suvisdev.core.` in documentation and agent-facing import examples.
+- Physical paths: `suvisdev/apps/<app>/` and `suvisdev/core/`; logical namespace is `suvisdev.<app>` and `suvisdev.core`.
+
+## Conflict priority
+
+1. User's most specific **recent** instruction  
+2. `docs/` wiki rules for the affected area  
+3. `CLAUDE.md` backend handoff section  
+4. This English top-level block  
+5. Korean harness summary below  
+
+Karpathy principles (no implicit assumptions, minimal diff) **always** apply.
+
+## Constraints
+
+- Do not weaken SOLID or layer boundaries for speed.
+- Do not add features, abstractions, or configs outside request scope.
+- When rules conflict with legacy code, change only what the task requires; note the reason in one line.
+
+---
+
 # 하네스 엔지니어링 (Karpathy 정렬) — Backend
 
-이 저장소 `backend/` 에서 에이전트는 **행동을 제약하는 하네스**로 동작한다.  
-상세·예시는 루트 `CLAUDE.md`, 운영 설명은 `backend/CURSOR.md`를 따른다.
+이 저장소 `suvisdev/` 에서 에이전트는 **행동을 제약하는 하네스**로 동작한다.  
+상세·예시는 루트 [`CLAUDE.md`](CLAUDE.md)를 따른다. 인덱스 제외 패턴은 [`.cursorignore`](.cursorignore)와 동기화한다.
 
 ---
 
 ## 필수: `docs/` 코딩 규칙 (코드 작성 전)
 
-**`backend/` 아래 Python·FastAPI 코드를 작성·수정하기 전에**, 반드시 아래 순서로 문서를 읽고 규칙을 인지한다.  
+**`suvisdev/` 아래 Python·FastAPI 코드를 작성·수정하기 전에**, 반드시 아래 순서로 문서를 읽고 규칙을 인지한다.  
 문서 없이 관례를 추측하여 구현하지 않는다.
 
 ### 1단계 — 인덱스
 
-- [`docs/README.md`](../docs/README.md)  
+- [`docs/README.md`](docs/README.md)  
   - 영역별 규칙 경로·읽는 순서 확인
 
 ### 2단계 — 백엔드 규칙 (전문 읽기)
 
-- [`docs/DevOps/Backend/PYTHON_FASTAPI_RULES.md`](../docs/DevOps/Backend/PYTHON_FASTAPI_RULES.md)  
+- [`docs/DevOps/Backend/PYTHON_FASTAPI_RULES.md`](docs/DevOps/Backend/PYTHON_FASTAPI_RULES.md)  
   - Controller → Service → Repository  
   - Pydantic Schema, async Repository, 앱 모듈 구조
-- [`docs/DevOps/Backend/ENTITY_RULE.md`](../docs/DevOps/Backend/ENTITY_RULE.md)  
+- [`docs/DevOps/Backend/ENTITY_RULE.md`](docs/DevOps/Backend/ENTITY_RULE.md)  
   - 모든 테이블 PK: `int` 자동 증감, 컬럼명 `id`
 
 ### 3단계 — 도메인 문서 (해당 작업 시)
 
 | 작업 영역 | 추가로 읽을 문서 |
 |-----------|------------------|
-| `backend/apps/titanic/` | [`docs/타이타닉 개발/james_fastapi_context.md`](../docs/타이타닉%20개발/james_fastapi_context.md) |
-| `backend/apps/mova/` | `backend/apps/mova/` 기존 controller·repository 패턴 + PYTHON_FASTAPI_RULES |
-| `backend/apps/secom/` | `backend/apps/secom/app/` 참고 구현 + PYTHON_FASTAPI_RULES |
+| `suvisdev/apps/titanic/` | [`docs/타이타닉 개발/james_fastapi_context.md`](docs/타이타닉%20개발/james_fastapi_context.md) |
+| `suvisdev/apps/mova/` | `suvisdev/apps/mova/` 기존 패턴 + PYTHON_FASTAPI_RULES + `CLAUDE.md` |
+| `suvisdev/apps/viewer/` | `suvisdev/apps/viewer/` 기존 패턴 + PYTHON_FASTAPI_RULES |
 
 ### 4단계 — 구현
 
 - 위 규칙을 만족하는 **최소 diff**로만 코드 작성
+- SOLID + Hexagonal + Clean + DDD (영문 최상위 규칙) 준수
 - 규칙과 충돌하는 기존 코드를 건드릴 때는 이유를 한 줄로 남긴다
 
 ### Cursor 참조 예
@@ -42,6 +105,7 @@
 @docs/README.md
 @docs/DevOps/Backend/PYTHON_FASTAPI_RULES.md
 @docs/DevOps/Backend/ENTITY_RULE.md
+@CLAUDE.md
 ```
 
 ---
@@ -64,8 +128,9 @@
 ## 충돌 시 우선순위
 
 1. 사용자의 **더 구체적·최근** 지시  
-2. **`docs/` 내 해당 영역 규칙 MD** (본 파일이 가리키는 경로)  
-3. 본 `.cursorrules` 요약  
-4. 루트 `CLAUDE.md`
+2. **영문 최상위 블록** (PKS · SOLID · 아키텍처 · suvisdev 경로)  
+3. **`docs/`** 내 해당 영역 규칙 MD  
+4. **`CLAUDE.md`** 백엔드 인수인계  
+5. 본 한국어 요약  
 
 네 원칙(묵시적 가정 금지·최소 diff)은 항상 유지한다.

@@ -1,6 +1,6 @@
-﻿# 삭제된 파일 — 인덱스·검색에서 제외
-backend/apps/titanic/app/walter_reader.py
+# 삭제된 파일 — 인덱스·검색에서 제외
+suvisdev/apps/titanic/app/walter_reader.py
 
 # 이 저장소에 없는 외부(agora) 경로
-**/com.ragwatson.agora/**
-**/services/com.ragwatson.agora/**
+**/cloud.suvisdev.agora/**
+**/services/cloud.suvisdev.agora/**
