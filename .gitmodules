@@ -1,8 +1,8 @@
 [submodule "suvisdev"]
 	path = suvisdev
 	url = https://github.com/suvisdev/com.ragwatson.api.git
-[submodule "docs"]
-	path = docs
+[submodule "vault"]
+	path = vault
 	url = https://github.com/suvisdev/com.ragwatson.docs.git
 [submodule "suvis"]
 	path = suvis
