@@ -4,7 +4,7 @@
 
 | 역할 | 경로 |
 |------|------|
-| CSV 업로드 API | `POST /titanic/james/upload` → `crew_james_director_router.py` |
+| CSV 업로드 API | `POST /api/titanic/james/upload` → `crew_james_director_router.py` |
 | Schema | `adapter/inbound/api/schemas/crew_james_director_schema.py` |
 | 입력 포트 (ABC) | `app/ports/input/crew_james_director_use_case.py` |
 | 업로드 유스케이스 | `app/use_cases/crew_james_director_interactor.py` |
@@ -13,7 +13,7 @@
 | 업로드 DB | `adapter/outbound/pg/crew_james_director_pg_repository.py` |
 | Person ORM | `adapter/outbound/orm/passenger_rose_model_orm.py` |
 | Booking ORM | `adapter/outbound/orm/passenger_jack_trainer_orm.py` |
-| Walter 소개 API | `GET /titanic/walter/myself` → `crew_walter_roaster_router.py` |
+| Walter 소개 API | `GET /api/titanic/walter/myself` → `crew_walter_roaster_router.py` |
 | Walter Schema | `adapter/inbound/api/schemas/crew_walter_roaster_schema.py` |
 | Walter 입력 포트 | `app/ports/input/crew_walter_roaster_use_case.py` |
 | Walter 유스케이스 | `app/use_cases/crew_walter_roaster_interactor.py` |
