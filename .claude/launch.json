@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "suvis-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "suvis", "run", "dev"],
+      "port": 3000
+    }
+  ]
+}
