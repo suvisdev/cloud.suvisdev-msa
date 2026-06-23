@@ -58,12 +58,29 @@ Karpathy가 지적한 전형적인 문제는 다음과 같다.
 
 ```text
 cloud.suvisdev/
+├── _docs/                 ← 공통 문서 (워크스페이스·인프라·도구 설정)
 ├── suvisdev/              ← 백엔드 (FastAPI)
-│   ├── _claude/           ← 백엔드 규칙·ENTITY_RULE
+│   ├── _docs/             ← 백엔드 문서 (아키텍처·API·ERD·규칙)
+│   ├── _claude/           ← 백엔드 Claude 규칙
 │   └── apps/<app>/_docs/  ← 앱별 ERD·도메인 문서
 ├── suvis/                 ← 프론트엔드 (Next.js)
-│   └── _claude/           ← 프론트 규칙·REACT_RULES
+│   ├── _docs/             ← 프론트엔드 문서 (화면 설계·컴포넌트 규칙)
+│   └── _claude/           ← 프론트 Claude 규칙
+└── susu/                  ← 모바일 (Flutter)
+    └── _docs/             ← Flutter 문서 (화면 설계·위젯 규칙)
 ```
+
+### 문서 배치 규칙
+
+| 문서 성격 | 위치 |
+|-----------|------|
+| 공통·인프라·워크스페이스 설정 (Obsidian, 심볼릭 링크 등) | `_docs/` |
+| 백엔드 아키텍처·API·ERD·FastAPI 규칙 | `suvisdev/_docs/` |
+| 앱별 ERD·도메인 설계 | `suvisdev/apps/<app>/_docs/` |
+| 프론트엔드 화면 설계·컴포넌트·Next.js 규칙 | `suvis/_docs/` |
+| Flutter 화면 설계·위젯·Dart 규칙 | `susu/_docs/` |
+
+> **규칙:** 새 문서를 만들 때 위 표에서 성격에 맞는 폴더에 배치한다. 루트나 임의 경로에 두지 않는다.
 
 | 작업 영역 | CLAUDE.md |
 |-----------|-----------|

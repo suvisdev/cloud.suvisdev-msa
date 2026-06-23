@@ -8,6 +8,13 @@ services:
       - "8000:8000"            # 내 진짜 컴퓨터의 8000번 포트와 도커의 8000번 포트를 연결해라
     environment:
       - ENV=production
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
 
   # 2. 프론트엔드(Next.js) 서비스 정의
   frontend:
