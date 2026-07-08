@@ -1,9 +1,0 @@
-[submodule "suvisdev"]
-	path = suvisdev
-	url = https://github.com/suvisdev/cloud.suvisdev.api.git
-[submodule "vault"]
-	path = vault
-	url = https://github.com/suvisdev/cloud.suvisdev.docs.git
-[submodule "suvis"]
-	path = suvis
-	url = https://github.com/suvisdev/cloud.suvisdev.www.git
